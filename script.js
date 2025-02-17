@@ -1,4 +1,4 @@
-let arr = ["drag1", "drag2", "drag3", "drag4", "drag5", "drag6"]; //id name for div tag which class name is image
+let arr = ["div1", "div2", "div3", "div4", "div5", "div6"]; //id name for div tag which class name is image
 let divs = document.querySelectorAll(".image");
 let k = 0;
 for (let imageSection of divs) {
