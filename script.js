@@ -1,51 +1,43 @@
-document.addEventListener("DOMContentLoaded", function () {
-  const divs = document.querySelectorAll(".image");
-  
-  // Make each div draggable
-  divs.forEach((div) => {
-    div.addEventListener("dragstart", (e) => {
-      // Set opacity during drag
-      e.target.style.opacity = "0.5";
-      e.dataTransfer.setData("text", e.target.id);  // Store the id of the dragged div
-    });
+let arr = ["drag1", "drag2", "drag3", "drag4", "drag5", "drag6"]; //id name for div tag which class name is image
+let divs = document.querySelectorAll(".image");
+let k = 0;
+for (let imageSection of divs) {
+  imageSection.id = arr[k++];
 
-    div.addEventListener("dragend", (e) => {
-      e.target.style.opacity = "1";  // Restore opacity after drag ends
-    });
-    
-    // Enable the divs to accept drops
-    div.addEventListener("dragover", (e) => {
-      e.preventDefault();  // Necessary to allow dropping
-    });
-
-    div.addEventListener("dragenter", (e) => {
-      e.preventDefault();  // Necessary to allow dropping
-      e.target.style.border = "5px solid #00c3ff";  // Highlight the drop target
-    });
-
-    div.addEventListener("dragleave", (e) => {
-      e.target.style.border = "2px solid #ccc";  // Remove highlight when the dragged div leaves
-    });
-
-    div.addEventListener("drop", (e) => {
-      e.preventDefault();
-      const dragDivId = e.dataTransfer.getData("text");
-      const draggedDiv = document.getElementById(dragDivId);
-      const targetDiv = e.target;
-
-      // Swap background images
-      const draggedBg = draggedDiv.style.backgroundImage;
-      const targetBg = targetDiv.style.backgroundImage;
-      
-      draggedDiv.style.backgroundImage = targetBg;
-      targetDiv.style.backgroundImage = draggedBg;
-
-      // Swap IDs to reflect the swapped positions
-      const tempId = draggedDiv.id;
-      draggedDiv.id = targetDiv.id;
-      targetDiv.id = tempId;
-
-      e.target.style.border = "2px solid #ccc";  // Remove the highlight
-    });
+  imageSection.addEventListener("dragstart", (e) => {
+    let div = e.target;
+    div.style.opacity = "0.5";
+    e.dataTransfer.setData("text", div.id);
   });
-});
+
+  imageSection.addEventListener("dragend", (e) => {
+    let div = e.target;
+    div.style.opacity = "1";
+  });
+
+  //dragover , dragenter , drop
+}
+
+let eventArr = ["dragover", "dragenter", "drop"];
+
+for (let dragevents of eventArr) {
+  for (let imgsection of divs) {
+    imgsection.addEventListener(dragevents, (e) => {
+      e.preventDefault();
+      if (dragevents === "drop") {
+        let drag1 = e.dataTransfer.getData("text");
+        let drag1Element = document.getElementById(drag1);
+        let drag2 = imgsection.id;
+
+        // Swap the background images
+        let tempBg = drag1Element.style.backgroundImage;
+        drag1Element.style.backgroundImage = imgsection.style.backgroundImage;
+        imgsection.style.backgroundImage = tempBg;
+
+        // Update the IDs
+        drag1Element.id = drag2;
+        imgsection.id = drag1;
+      }
+    });
+  }
+}
